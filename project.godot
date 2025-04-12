@@ -1,0 +1,30 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="PickleGD"
+run/main_scene="uid://jinh50i3h2ls"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="uid://t6b3iqwfuvhd"
+
+[debug]
+
+multirun/number_of_windows=2
+multirun/add_custom_args=true
+multirun/window_args=["listen", "join"]
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/picklegd/plugin.cfg")
+
+[gdunit4]
+
+ui/toolbar/run_overall=true
