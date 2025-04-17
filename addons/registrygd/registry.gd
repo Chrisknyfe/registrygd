@@ -22,9 +22,9 @@ const ID_INVALID = -1
 var next_available_id = 0
 
 ## Mapping from names to stored objects.
-var by_name: Dictionary[StringName] = {}
+var by_name: Dictionary[StringName, Variant] = {}
 ## Mapping from ID's to stored objects.
-var by_id: Dictionary[int] = {}
+var by_id: Dictionary[int, Variant] = {}
 
 
 ## Mapping from names to ID's.
