@@ -19,7 +19,7 @@ var _some_behavior_names = [
 ]
 
 func behavior(new_name: String):
-	var b = RegisteredBehavior.new()
+	var b = RegisteredObject.new()
 	b.name = new_name
 	return b
 
@@ -29,18 +29,19 @@ func before_test():
 ## Registered behaviors are retrievable by name and numeric ID
 func test_register_and_get() -> void:
 	for n in _some_behavior_names:
-		var b = _reg.register(behavior(n))
+		var b = behavior(n)
+		var id = _reg.register(n, b)
 		assert_bool(_reg.has_by_name(n)).is_true()
-		assert_bool(_reg.has_by_id(b.id)).is_true()
+		assert_bool(_reg.has_by_id(id)).is_true()
 		var b2 = _reg.get_by_name(n)
 		assert_object(b2).is_same(b)
-		var b3 = _reg.get_by_id(b.id)
-		assert_object(b3).is_same(b)
+		var b3 = _reg.get_by_id(id)
+		assert_object(b3).is_same(b2)
 
 ## Registered behaviors have unique IDs.
 func test_unique_ids() -> void:
 	for n in _some_behavior_names:
-		_reg.register(behavior(n))
+		_reg.register(n, behavior(n))
 	for n in _some_behavior_names:
 		var b = _reg.get_by_name(n)
 		for n2 in _some_behavior_names:
@@ -51,7 +52,7 @@ func test_unique_ids() -> void:
 
 func test_clear() -> void:
 	for n in _some_behavior_names:
-		_reg.register(behavior(n))
+		_reg.register(n, behavior(n))
 	_reg.clear()
 	for n in _some_behavior_names:
 		assert_bool(_reg.has_by_name(n)).is_false()
@@ -59,7 +60,7 @@ func test_clear() -> void:
 
 func test_associations() -> void:
 	for n in _some_behavior_names:
-		_reg.register(behavior(n))
+		_reg.register(n, behavior(n))
 	var assoc = _reg.get_associations()
 	print(assoc)
 	
@@ -70,10 +71,10 @@ func test_associations() -> void:
 	var _reg_client = Registry.new()
 	
 	# So let's load the associations first!
-	_reg_client.add_name_to_id_associations(assoc)
+	_reg_client.merge_associations(assoc)
 	# then the client will register its behaviors...
 	for n in reversed:
-		_reg_client.register(behavior(n))
+		_reg_client.register(n, behavior(n))
 		
 	# And now server and client registries should match!
 	for n in _some_behavior_names:
